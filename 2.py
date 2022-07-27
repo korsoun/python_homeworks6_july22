@@ -83,10 +83,42 @@ def my_eval (str_polynom):
                 list_polynom.pop(index_deduct)
         return list_polynom[0]
 
+    # Третья часть - принимает список элементов, включая скобки, выдает список элементов, в котором раскрыта 1 скобка.
+    def remove_brackets (list_polynom):
+        opening_brackets = []
+        # Получаем список индексов, на которых находятся открывающие скобки.
+        for i in range(len(list_polynom)):
+            if list_polynom[i] == '(':
+                opening_brackets.append(i)
+        start_bracket = opening_brackets[len(opening_brackets)-1] # Хранит позицию открытия скобки, с которой предстоит работа.
+        closing_brackets = []
+        # Получаем список индексов, на которых хранятся закрывающие скобки, рассматривая элементы после последней открывающей скобки.
+        for i in range(opening_brackets[len(opening_brackets)-1], len(list_polynom)):
+            if list_polynom[i] == ')':
+                closing_brackets.append(i)
+        end_bracket = closing_brackets[0] # Хранит позицию закрытия скобки, с которой предстоит работать
+        inner_list = []
+        # Составление списка выражения, находящегося в скобке
+        for i in range(start_bracket + 1, end_bracket):
+            inner_list.append(list_polynom[i])
+        # Находим значение выражения в скобке
+        inner_solution = list_solution(inner_list)
+        list_polynom[start_bracket] = inner_solution
+        while end_bracket != start_bracket:
+            list_polynom.pop(end_bracket)
+            end_bracket -= 1
+        return list_polynom
+
+    # Получаем общий список для выражения.
     list_polynom = conv_to_list(str_polynom)
+    # Применяем нужную функцию и раскрыаем скобки.
+    if  '(' in list_polynom:
+        while '(' in list_polynom:
+            list_polynom = remove_brackets(list_polynom)
+    # Если в строке не было скобок, или с ними справились, решение простого выражения.
     polynom_solution = list_solution(list_polynom)
-
-
     return polynom_solution
 
-print(my_eval('4*3+6'))
+text = '4*((3+6)*2)-17'
+print(f'Введено выражение {text}')
+print(f'Решение выражения: {my_eval(text)}')
