@@ -119,6 +119,6 @@ def my_eval (str_polynom):
     polynom_solution = list_solution(list_polynom)
     return polynom_solution
 
-text = '4*((3+6)*2)-17'
+text = '4*((3+6)*2)-17/((14-12)*(6+1))'
 print(f'Введено выражение {text}')
-print(f'Решение выражения: {my_eval(text)}')
+print(f'Решение выражения: {round(my_eval(text), 3)}')
